@@ -1,0 +1,21 @@
+<div class="box box-solid">
+    <div class="box-header with-border">
+        <h3 class="box-title">Measured Data</h3>
+        <div class="box-tools pull-right">
+            <button type="button" class="btn btn-box-tool">
+                <i class="fa fa-expand"></i>
+            </button>
+        </div>
+    </div>
+    <div class="box-body">
+        <div id="carousel-{{ type }}" class="carousel slide" data-ride="carousel" data-interval="false">
+            {% include 'slider.html' with values=data.measured_data type='measured'%}
+            <a id="prev" class="left carousel-control" href="#carousel-{{ type }}">
+                <span class="fa fa-angle-left"></span>
+            </a>
+            <a id="next" class="right carousel-control" href="#carousel-{{ type }}">
+                <span class="fa fa-angle-right"></span>
+            </a>
+        </div>
+    </div>
+</div>

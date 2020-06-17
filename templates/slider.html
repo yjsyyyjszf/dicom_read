@@ -1,0 +1,10 @@
+<div class="carousel-inner">
+    {% for img in values %}
+        <div class="item {% if forloop.counter == 1 %}active{% endif %}">
+            <img src="data:image/png;base64,{{ img.image|safe }}"><br>
+            <div class="carousel-caption">
+                {{ img.name }}
+            </div>
+        </div>
+    {% endfor %}
+</div>

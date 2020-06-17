@@ -1,0 +1,230 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block sidebar %}
+    <!-- Left side column. contains the logo and sidebar -->
+            <aside class="main-sidebar">
+                <!-- sidebar: style can be found in sidebar.less -->
+                <section class="sidebar">
+                    <!-- Sidebar user panel -->
+                    <div class="user-panel">
+                        <div class="pull-left image">
+                            <img src="{% static 'dist/img/avatar5.png' %}" class="img-circle" alt="User Image">
+                        </div>
+                        <div class="pull-left info">
+                            <p>{{ request.user }}</p>
+                            <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
+                        </div>
+                    </div>
+                    <!-- sidebar menu: : style can be found in sidebar.less -->
+                    <ul id="selectedFiles" class="sidebar-menu tree" data-widget="tree">
+                        <li class="header">MAIN NAVIGATION</li>
+                        {% for f in data.files %}
+                            <li class="treeview">
+                                <a href="#">
+                                    <i class="fa fa-dashboard"></i><span>{{ f }}</span>
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </section>
+                <!-- /.sidebar -->
+            </aside>
+{% endblock %}
+{% block content %}
+    <form id="myform" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="form-group">
+{#            <label for="files" class="col-sm-1 control-label">Select Files:</label>#}
+{#            <div class="col-sm-10">#}
+                <input type="file" name="files" class="form-control" id="files" multiple value="{{ data.files }}">
+{#            </div>#}
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                {% include 'measured_data.html' %}
+            </div>
+            <div class="col-md-6">
+                {% include 'tab_view.html' %}
+            </div>
+{#        </div>#}
+{#        <div class="row">#}
+            <div class="col-md-12" style="margin-top: -15px">
+                <div class="box">
+                    <div class="box-body box-body-padding">
+                        <div class="col-md-2" style="padding-top: 53px">
+                            <div class="form-group">
+                                <label for="step" class="col-xs-5 control-label">Step length:</label>
+                                <div class="col-sm-7">
+                                    <input type="number" class="form-control" id="step" step="0.1" value="0.1">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <div class ='circleBase' id='rotateMode'>
+                                    <table id="left">
+                                        <tr>
+                                            <td>
+                                                <input name="negoffsetY" id="input-left" type="number" class="form-control" step="0.1" value="{{ data.negoffsetY }}" style="width: 50px;">
+                                            </td>
+                                            <td>
+                                                <a id="btn-left" class="btn btn-default btn-md" href="#"><span class="glyphicon glyphicon-arrow-left"></span></a>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <table id="right">
+                                        <tr>
+                                            <td>
+                                                <a id="btn-right" class="btn btn-default btn-md" href="#"><span class="glyphicon glyphicon-arrow-right"></span></a>
+                                            </td>
+                                            <td>
+                                                <input name="offsetX" id="input-right" type="number" class="form-control" step="0.1" value="{{ data.offsetX }}" style="width: 50px;">
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <table id="up">
+                                        <tr>
+                                            <td>
+                                                <input name="offsetY" id="input-up" type="number" class="form-control" step="0.1" value="{{ data.offsetY }}" style="width: 50px;margin-left: -4px;">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <a id="btn-up" class="btn btn-default btn-md" href="#"><span class="glyphicon glyphicon-arrow-up"></span></a>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <table id="down">
+                                        <tr>
+                                            <td>
+                                                <a id="btn-down" class="btn btn-default btn-md" href="#"><span class="glyphicon glyphicon-arrow-down"></span></a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <input name="negoffsetX" id="input-down" type="number" class="form-control" step="0.1" value="{{ data.negoffsetX }}" style="width: 50px;margin-left: -4px;">
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-2" style="padding-top: 53px">
+                            <div class="form-group">
+                                <label for="rotation" class="col-xs-4 control-label">Rotation Interval:</label>
+                                <div class="col-sm-7">
+                                    <input type="number" class="form-control" id="rotation" step="0.1" value="0.1">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2" style="padding-top: 53px">
+                            <table>
+                                <tr>
+                                    <td>
+                                        <a id="count_clock" class="btn btn-default btn-xs">
+                                            <svg class="bi bi-arrow-counterclockwise" width="2em" height="2em" viewBox="0 -2 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                                <path fill-rule="evenodd" d="M12.83 6.706a5 5 0 0 0-7.103-3.16.5.5 0 1 1-.454-.892A6 6 0 1 1 2.545 5.5a.5.5 0 1 1 .91.417 5 5 0 1 0 9.375.789z"/>
+                                                <path fill-rule="evenodd" d="M7.854.146a.5.5 0 0 0-.708 0l-2.5 2.5a.5.5 0 0 0 0 .708l2.5 2.5a.5.5 0 1 0 .708-.708L5.707 3 7.854.854a.5.5 0 0 0 0-.708z"/>
+                                            </svg>
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <input type="number" class="form-control" id="rotation_val" name="rotation_val" step="any" value="{{ data.rotation }}">
+                                    </td>
+                                    <td>
+                                        <a id="clock" class="btn btn-default btn-xs">
+                                            <svg class="bi bi-arrow-clockwise" width="2em" height="2em" viewBox="0 -2 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                                <path fill-rule="evenodd" d="M3.17 6.706a5 5 0 0 1 7.103-3.16.5.5 0 1 0 .454-.892A6 6 0 1 0 13.455 5.5a.5.5 0 0 0-.91.417 5 5 0 1 1-9.375.789z"/>
+                                                <path fill-rule="evenodd" d="M8.147.146a.5.5 0 0 1 .707 0l2.5 2.5a.5.5 0 0 1 0 .708l-2.5 2.5a.5.5 0 1 1-.707-.708L10.293 3 8.147.854a.5.5 0 0 1 0-.708z"/>
+                                            </svg>
+                                        </a>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="col-md-2">
+                            <button type="submit" id="btn-analyze" class="btn btn-block btn-success">Analyze</button>
+                        </div>
+                        <div class="col-md-2">
+                            <button type="submit" id="btn-export" class="btn btn-block btn-primary">
+                                <i class="fa fa-download"></i> Export Data
+                            </button>
+                            <button type="submit" id="btn-print" class="btn btn-block btn-default">
+                                <i class="fa fa-print"></i> Print Report
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+{% endblock %}
+{% block javascript %}
+    <script type="text/javascript">
+    $(document).ready(function() {
+        $('#clock').click(function() {
+            var input = parseFloat($('#rotation').val());
+            var currentValue = parseFloat($('#rotation_val').val());
+            $('#rotation_val').val(currentValue + input);
+        });
+
+        $('#count_clock').click(function() {
+          var input = parseFloat($('#rotation').val());
+           var currentValue = parseFloat($('#rotation_val').val());
+           $('#rotation_val').val(currentValue - input);
+        });
+
+        $('.right').on('click', function(e) {
+              e.preventDefault();
+          $('.carousel').carousel('next')
+        });
+
+        $('#prev').on('click', function(e) {
+              e.preventDefault();
+            $('.carousel').carousel('prev')
+        });
+
+        $('#btn-right').click(function() {
+           var input = parseFloat($('#step').val());
+           var currentValue = parseFloat($('#input-right').val());
+           $('#input-right').val(currentValue + input);
+           $('#input-left').val(0);
+        });
+
+        $('#btn-up').click(function() {
+          var input = parseFloat($('#step').val());
+           var currentValue = parseFloat($('#input-up').val());
+           $('#input-up').val(currentValue + input);
+           $('#input-down').val(0);
+        });
+
+        $('#btn-left').click(function() {
+           var input = parseFloat($('#step').val());
+           var currentValue = parseFloat($('#input-left').val());
+           $('#input-left').val(currentValue - input);
+           $('#input-right').val(0);
+        });
+
+        $('#btn-down').click(function() {
+          var input = parseFloat($('#step').val());
+           var currentValue = parseFloat($('#input-down').val());
+           $('#input-down').val(currentValue - input);
+           $('#input-up').val(0);
+        });
+
+        $('#btn-analyze').click(function(){
+            $('#myform').attr("action", "{% url 'home' %}");
+        });
+
+        $('#btn-export').click(function(){
+            $('#myform').attr("action", "{% url 'export' %}");
+        });
+
+        $('#btn-print').click(function(){
+            $('#myform').attr("action", "{% url 'print' %}");
+        });
+
+    });
+</script>
+{% endblock %}

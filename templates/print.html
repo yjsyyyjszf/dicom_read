@@ -1,0 +1,18 @@
+<table>
+    {% for obj in data %}
+        <tr><td>{{ obj.measured_data.name }}</td></tr>
+        <tr>
+            <td><img src="data:image/png;base64,{{ obj.measured_data.image|safe }}"></td>
+            <td><img src="data:image/png;base64,{{ obj.sigma.image|safe }}"></td>
+        </tr>
+        <tr>
+            <td><img src="data:image/png;base64,{{ obj.positions.image|safe }}"></td>
+            <td><img src="data:image/png;base64,{{ obj.uniformity.image|safe }}"></td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                {% include 'datatable.html' with data=obj%}
+            </td>
+        </tr>
+    {% endfor %}
+</table>
